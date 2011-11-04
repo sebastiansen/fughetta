@@ -36,33 +36,33 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 * Instruments
 
 ```clj
-(inst :distortion-guitar (c) (d) (e)) => "I[DISTORTION_GUITAR] [60] [62] [64]"
+  (inst :distortion-guitar (c) (d) (e)) => "I[DISTORTION_GUITAR] [60] [62] [64]"
 ```
 
 * Rhythms
 
 ```clj
-(let [x "q"
-      - "Rq"]
-  (rhythm
-    :bass-drum      [x - - - x - - - x - - - x - - -]
-    :electric-snare [- - x - - - x - - - x - - - x -]
-    :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
+  (let [x "q"
+        - "Rq"]
+    (rhythm
+      :bass-drum      [x - - - x - - - x - - - x - - -]
+      :electric-snare [- - x - - - x - - - x - - - x -]
+      :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
 ```
 
 ### Patterns
 Use the pattern function to join notes as well as patterns
 
 ```clj
-(pattern (inst :distortion-guitar (c) (d) (e))
-         (pattern (c) (d) (e)))
-=> " I[DISTORTION_GUITAR] [60] [62] [64]   [60] [62] [64]  "
+  (pattern (inst :distortion-guitar (c) (d) (e))
+           (pattern (c) (d) (e)))
+  => " I[DISTORTION_GUITAR] [60] [62] [64]   [60] [62] [64]  "
 ```
 
 ### Tempo
 
 ```clj
-(tempo 150 (pattern (c) (d) (e)))
+  (tempo 150 (pattern (c) (d) (e)))
 ```
 
 ### Player
@@ -70,19 +70,19 @@ Use the pattern function to join notes as well as patterns
 * Play
 
 ```clj
-(play! (c) (d 5) (e 5 q))
+  (play! (c) (d 5) (e 5 q))
 ```
 
 * Stop
 
 ```clj
-(stop!)
+  (stop!)
 ```
 
 * Save to file
 
 ```clj
-(save! "filename" (c) (d 5) (e 5 q))
+  (save! "filename" (c) (d 5) (e 5 q))
 ```
 
 ### More to come...
