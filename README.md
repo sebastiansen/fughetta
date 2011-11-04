@@ -15,7 +15,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
       
 
 ```clj
-  (c 6) => "[72]"
+  (c 6) => "[72]" or "C6"
 ```
 
 * Durations 
