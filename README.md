@@ -50,7 +50,15 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
       :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
 ```
 
+### Combining Notes
+
+```clj
+  (++ (c) (d) (e)) => "[60]+[62]+[64]"
+  (++ (c) (-- (d) (e))) => "[60]+[62]_[64]"
+```
+
 ### Patterns
+
 Use the pattern function to join notes as well as patterns
 
 ```clj
