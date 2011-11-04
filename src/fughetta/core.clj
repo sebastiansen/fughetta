@@ -1,3 +1,16 @@
+;This program is free software: you can redistribute it and/or modify
+;it under the terms of the GNU General Public License as published by
+;the Free Software Foundation, either version 3 of the License, or
+;(at your option) any later version.
+
+;This program is distributed in the hope that it will be useful,
+;but WITHOUT ANY WARRANTY; without even the implied warranty of
+;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;GNU General Public License for more details.
+
+;You should have received a copy of the GNU General Public License
+;along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 (ns fughetta.core
   (:import [org.jfugue Player])
   (:require [clojure.string :as st]))
@@ -14,7 +27,9 @@
 
 (defn play!
   [& patts]
-  (.play player (apply pattern patts)))
+  (let [patt (apply pattern patts)]
+    (.play player patt)
+    patt))
 
 (defn stop!
   []
@@ -68,7 +83,7 @@
   (let [c (name c)]
     (eval `(defn ~(symbol c)
              [note#]
-             (assoc note# :chord ~c)))))
+             (assoc note# :chord ~(if (= c "min*") "min" c))))))
 
 (defn- key->inst
   [k]
@@ -92,19 +107,10 @@
   [n & patt]
   (str "T" n (apply pattern patt)))
 
-(defn vol
-  [n & patt]
-  (str "X[Volume]=" n (apply pattern patt)))
+(comment (defn vol
+           [n & patt]
+           (str "X[Volume]=" n (apply pattern patt))))
 
 (defn inst
   [i & patt]
   (str "I" (key->inst i) (apply pattern patt)))
-
-(comment (play! (tempo 150
-                       (inst :piano (e 4) (c 5) (ff 4) (q))
-                       (let [x "q"
-                             - "Rq"]
-                         (rhythm
-                          :bass-drum      [x - - - x - - - x - - - x - - -]
-                          :electric-snare [- - x - - - x - - - x - - - x -]
-                          :closed-hi-hat  [x x x x x x x x x x x x x x x x])))))
