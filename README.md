@@ -7,7 +7,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 * Defualts
 
 ```clj
-  (cs) => "[61]" or "C#"   
+  (cs) => "[61]" = "C#"   
   (q-) => "Rq."
 ```
 
@@ -15,7 +15,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
       
 
 ```clj
-  (c 6) => "[72]" or "C6"
+  (c 6) => "[72]" = "C6"
 ```
 
 * Durations 
