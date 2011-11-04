@@ -50,6 +50,15 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
     :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
 ```
 
+### Patterns
+Use the pattern function to join notes as well as patterns
+
+```clj
+(pattern (inst :distortion-guitar (c) (d) (e))
+         (pattern (c) (d) (e)))
+=> " I[DISTORTION_GUITAR] [60] [62] [64]   [60] [62] [64]  "
+```
+
 ### Tempo
 
 ```clj
