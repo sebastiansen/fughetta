@@ -50,7 +50,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
     :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
 ```
 
-* Tempo
+### Tempo
 
 ```clj
 (tempo 150 (pattern (c) (d) (e)))
@@ -80,7 +80,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 
 ## JFugue
 
-More information on JFugue can be found [here] (http://www.cs.cofc.edu/~manaris/spring04/cs220-handouts/JFugue/JFugue-UserGuide.html#octave)
+More information on JFugue can be found [here] (http://www.cs.cofc.edu/~manaris/spring04/cs220-handouts/JFugue/JFugue-UserGuide.html)
 
 ## License
 
