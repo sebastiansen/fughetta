@@ -15,6 +15,7 @@
 
 (ns fughetta.core
   (:import [org.jfugue Player])
+  (:use [clojure.contrib macro-utils])
   (:require [clojure.string :as st]))
 
 (def ^{:private true} player (Player.))
@@ -58,34 +59,46 @@
    :af  8 :a  9 :as 10
    :bf 10 :b 11 :bs 12})
 
-(for [[n v] notes]
-  (eval `(defn ~(symbol (name n))
-           ([]
-              (Note. [(+ 60 ~v)] nil nil))
-           ([octave#]
-              (Note. [(+ (* octave# 12) ~v)] nil nil))
-           ([octave# & durations#]
-              (reduce
-               #(%2 %1)
-               (Note. [(+ (* octave# 12) ~v)] nil nil)
-               durations#)))))
+(macrolet
+    [(defnotes []
+       `(do
+          ~@(for [[n v] notes]
+              `(defn ~(symbol (name n))
+                 ([]
+                    (Note. [(+ 60 ~v)] nil nil))
+                 ([octave#]
+                    (Note. [(+ (* octave# 12) ~v)] nil nil))
+                 ([octave# & durations#]
+                    (reduce
+                     #(%2 %1)
+                     (Note. [(+ (* octave# 12) ~v)] nil nil)
+                     durations#))))))]
+  (defnotes))
 
-(for [d (mapcat (fn [s] [(str s) (str s "-")]) "whqistxn")]
-  (eval `(defn ~(symbol d)
-           ([]
-              (Note. "R" nil ~d))
-           ([note#]
-              (assoc note# :durations (if-let [durs# (:durations note#)]
-                                        (conj durs# ~d)
-                                        [~d]))))))
+(macrolet
+   [(defdurations []
+      `(do
+         ~@(for [d (mapcat (fn [s] [(str s) (str s "-")]) "whqistxn")]
+             `(defn ~(symbol d)
+                ([]
+                   (Note. "R" nil ~d))
+                ([note#]
+                   (assoc note# :durations (if-let [durs# (:durations note#)]
+                                             (conj durs# ~d)
+                                             [~d])))))))]
+  (defdurations))
 
 (def chords [:maj :min* :maj7 :min7 :dim :aug :aug7 :sus :add9])
 
-(for [c chords]
-  (let [c (name c)]
-    (eval `(defn ~(symbol c)
-             [note#]
-             (assoc note# :chord ~(if (= c "min*") "min" c))))))
+(macrolet
+   [(defchords []
+      `(do
+         ~@(for [c chords]
+             (let [c (name c)]
+               `(defn ~(symbol c)
+                  [note#]
+                  (assoc note# :chord ~(if (= c "min*") "min" c)))))))]
+  (defchords))
 
 (defn- key->inst
   [k]
