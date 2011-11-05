@@ -1,6 +1,6 @@
 # fughetta
 
-A [JFugue](http://www.jfugue.org/) wrapper for Clojure
+A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Haskore] (http://www.haskell.org/haskellwiki/Haskore)
 
 ### Notes, durations and chords as functions
 
