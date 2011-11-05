@@ -4,7 +4,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 
 ### Notes, durations and chords as functions
 
-* Defualts
+* Defaults
 
 ```clj
   (cs) => "[61]" = "C#"   
