@@ -1,13 +1,13 @@
 # fughetta
 
-A [JFugue](http://www.jfugue.org/) wrapper for Clojure
+A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Haskore] (http://www.haskell.org/haskellwiki/Haskore)
 
 ### Notes, durations and chords as functions
 
-* Defualts
+* Defaults
 
 ```clj
-  (cs) => "[61]" or "C#"   
+  (cs) => "[61]" = "C#"   
   (q-) => "Rq."
 ```
 
@@ -15,7 +15,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
       
 
 ```clj
-  (c 6) => "[72]"
+  (c 6) => "[72]" = "C6"
 ```
 
 * Durations 
@@ -36,24 +36,42 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 * Instruments
 
 ```clj
-(inst :distortion-guitar (c) (d) (e)) => "I[DISTORTION_GUITAR] [60] [62] [64]"
+  (inst :distortion-guitar (c) (d) (e)) => "I[DISTORTION_GUITAR] [60] [62] [64]"
 ```
 
 * Rhythms
 
 ```clj
-(let [x "q"
-      - "Rq"]
-  (rhythm
-    :bass-drum      [x - - - x - - - x - - - x - - -]
-    :electric-snare [- - x - - - x - - - x - - - x -]
-    :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
+  (let [x "q"
+        - "Rq"]
+    (rhythm
+      :bass-drum      [x - - - x - - - x - - - x - - -]
+      :electric-snare [- - x - - - x - - - x - - - x -]
+      :closed-hi-hat  [x x x x x x x x x x x x x x x x]))
+```
+
+### Combining Notes
+
+```clj
+  (++ (c) (d) (e)) => "[60]+[62]+[64]"
+  (++ (c) (-- (d) (e))) => "[60]+[62]_[64]"
+```
+
+### Patterns
+
+Use the pattern function to join notes as well as patterns
+
+```clj
+  (pattern 
+    (inst :distortion-guitar (c) (d) (e))
+    (pattern (c) (d) (e)))
+  => " I[DISTORTION_GUITAR] [60] [62] [64]   [60] [62] [64]  "
 ```
 
 ### Tempo
 
 ```clj
-(tempo 150 (pattern (c) (d) (e)))
+  (tempo 150 (pattern (c) (d) (e)))
 ```
 
 ### Player
@@ -61,19 +79,19 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure
 * Play
 
 ```clj
-(play! (c) (d 5) (e 5 q))
+  (play! (c) (d 5) (e 5 q))
 ```
 
 * Stop
 
 ```clj
-(stop!)
+  (stop!)
 ```
 
 * Save to file
 
 ```clj
-(save! "filename" (c) (d 5) (e 5 q))
+  (save! "filename" (c) (d 5) (e 5 q))
 ```
 
 ### More to come...
