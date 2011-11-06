@@ -90,47 +90,50 @@
 
 ;;Instruments, rhythms and controllers
 
+(defn pattern
+  [& xs]
+  (str " " (apply str (map #(str " " % " ") (flatten xs))) " "))
+
+(defn bar
+  [& xs]
+  (pattern "|" xs "|"))
+
 (defn- key->inst
   [k]
   (str  "[" (st/upper-case (st/replace (name k) \- \_ )) "]"))
 
 (defn inst
   [i & patt]
-  (str "I" (key->inst i) (apply pattern patt)))
+  (str "I" (key->inst i) (pattern patt)))
 
 (defn rhythm
   [& layers]
   (pattern
    "V9"
-   (apply str
-          (mapcat
-           (fn [[i [k v]]]
-             (let [k (key->inst k)]
-               (str "L" [(inc i)]
-                    (apply pattern (map #(if (= (first %) \R)
-                                           %
-                                           (str k %)) v)))))
-           (map-indexed vector (partition 2 layers))))))
+   (map
+    (fn [[i [k v]]]
+      (let [k (key->inst k)]
+        (str "L" [(inc i)]
+             (pattern (map #(if (= (first %) \R)
+                              %
+                              (str k %)) v)))))
+    (map-indexed vector (partition 2 layers)))))
 
 (defn tempo
   [n & patt]
-  (str "T" n (apply pattern patt)))
+  (str "T" n (pattern patt)))
 
 (defn vol
   [n & patt]
-  (str "X[Volume]=" n (apply pattern patt)))
+  (str "X[Volume]=" n (pattern patt)))
 
 ;;Player
 
 (def ^{:private true} player (Player.))
 
-(defn pattern
-  [& xs]
-  (str " " (st/join " " xs) " "))
-
 (defn play!
   [& patts]
-  (let [patt (apply pattern patts)]
+  (let [patt (pattern patts)]
     (.play player patt)
     patt))
 
@@ -140,4 +143,4 @@
 
 (defn save!
   [file-name & patts]
-  (.save player (apply pattern patts) file-name))
+  (.save player (pattern patts) file-name))
