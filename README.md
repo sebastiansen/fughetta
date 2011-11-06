@@ -57,6 +57,15 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Has
   (++ (c) (-- (d) (e))) => "[60]+[62]_[64]"
 ```
 
+### Moving through semi-tones
+
+```clj
+  (>> (c)) => "[61]"
+  (>> (c) 4) => "[65]"
+  (<< (c)) => "[59]"
+  (<< (c) 4) => "[56]"
+```
+
 ### Patterns
 
 Use the pattern function to join notes as well as patterns
