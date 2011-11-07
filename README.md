@@ -28,7 +28,19 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Has
 
 ```clj
   (maj (q (c))) => "[60]majq"
-  (min* (d 6 w)) => "[74]minw"
+  (minor (d 6 w)) => "[74]minw"
+```
+
+### Patterns
+
+Use the pattern function to join notes (collections will be flattened)
+
+```clj
+  (pattern 
+    (c) (d) (e)
+    [(f) (g)]
+    (repeat 2 [(c) (d) (e)]))
+  => " [60] [62] [64] [65] [67] [60] [62] [64] [60] [62] [64] "
 ```
 
 ### Instruments and rhythms
@@ -43,7 +55,7 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Has
 
 ```clj
   (let [x "q"
-        - "Rq"]
+        - (q)]
     (rhythm
       :bass-drum      [x - - - x - - - x - - - x - - -]
       :electric-snare [- - x - - - x - - - x - - - x -]
@@ -64,17 +76,6 @@ A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Has
   (>> (c) 4) => "[65]"
   (<< (c)) => "[59]"
   (<< (c) 4) => "[56]"
-```
-
-### Patterns
-
-Use the pattern function to join notes as well as patterns
-
-```clj
-  (pattern 
-    (inst :distortion-guitar (c) (d) (e))
-    (pattern (c) (d) (e)))
-  => " I[DISTORTION_GUITAR] [60] [62] [64]   [60] [62] [64]  "
 ```
 
 ### Tempo
@@ -107,7 +108,7 @@ Use the pattern function to join notes as well as patterns
 
 ## JFugue
 
-More information on JFugue can be found [here] (http://www.cs.cofc.edu/~manaris/spring04/cs220-handouts/JFugue/JFugue-UserGuide.html)
+More information on JFugue can be found [here] (http://www.jfugue.org/jfugue-chapter2.pdf)
 
 ## License
 
