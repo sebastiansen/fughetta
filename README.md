@@ -73,13 +73,14 @@ Use the pattern function to join notes (collections will be flattened!)
 * Triplets
 
 ```clj
-  (*** (c) (d) (e)) => " [60]* [62]* [64]* "
+  (*** (c 5 q) (d 5 q) (e 5 q)) => " [60]q* [62]q* [64]q* "
 ```
 
 * Other tuplets
 
 ```clj
-  (** 4 (c) (d) (e) (f) (g)) => " [60]*5:4 [62]*5:4 [64]*5:4 [65]*5:4 [67]*5:4 "
+  (** 2 (c 5 q) (d 5 q) (e 5 q)) => " [60]q*3:2 [62]q*3:2 [64]q*3:2 "
+  (** 4 (map q (c) (d) (e) (f) (g))) => " [60]q*5:4 [62]q*5:4 [64]q*5:4 [65]q*5:4 [67]q*5:4 "
 ```
 
 ### Moving through semi-tones
@@ -91,7 +92,15 @@ Use the pattern function to join notes (collections will be flattened!)
   (<< (c) 4) => "[56]"
 ```
 
-### Tempo
+### Voices, tempo
+
+* Voices
+
+```clj
+  (voice 1 (c) (d) (e))
+```
+
+* Tempo
 
 ```clj
   (tempo 150 (c) (d) (e))
