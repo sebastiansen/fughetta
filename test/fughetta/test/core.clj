@@ -3,7 +3,7 @@
   (:use [clojure.test]))
 
 ;; Part 1 in New Millenium Cyanide Christ by Meshuggah
-(let [x s
+(let [x "s"
       - (s)
       patt1 #(->> (cycle (concat %3 %2 %1 %2))
                   (drop 3)
@@ -20,11 +20,9 @@
                (map #(map (fn [n] (if (= n -) - (>> (bf 2 s) n)))
                           %)
                     [g1 g2 g3]))]
-  (play! (tempo 150
-          (repeat 2 (inst :distortion-guitar g))
-          (repeat 2 (rhythm
-                     :bass-drum (patt1 b1 b2 b3)
-                     :electric-snare snare
-                     :crash-cymbal-1 cymbal)))))
-
-(stop!)
+  (tempo 150
+         (repeat 2 (inst :distortion-guitar g))
+         (repeat 2 (rhythm
+                    :bass-drum (patt1 b1 b2 b3)
+                    :electric-snare snare
+                    :crash-cymbal-1 cymbal))))

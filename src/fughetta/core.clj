@@ -154,8 +154,10 @@
           (fn [[i [k v]]]
             (let [k (key->inst k)]
               (pattern "L" [(inc i)]
-                       (map #(if (= (type %) Rest)
+                       (map #(condp = (type %)
+                                 Rest
                                (str %)
+                               String
                                (str k %)) v))))
           (map-indexed vector (partition 2 layers)))))
 
