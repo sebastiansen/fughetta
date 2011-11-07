@@ -18,7 +18,13 @@
   (:use [clojure.contrib macro-utils])
   (:require [clojure.string :as st]))
 
-;;Notes, durations and chords
+;; Patterns
+
+(defn pattern
+  [& xs]
+  (str " " (st/join " " (flatten xs)) " "))
+
+;; Notes, durations and chords
 
 (defrecord Note [pitch durations chord]
   Object
@@ -53,14 +59,15 @@
 (macrolet
    [(defdurations []
       `(do
-         ~@(for [d (mapcat (fn [s] [(str s) (str s "-")]) "whqistxn")]
-             `(defn ~(symbol d)
-                ([]
-                   (Rest. [~d]))
-                ([note#]
-                   (assoc note# :durations (if-let [durs# (:durations note#)]
-                                             (conj durs# ~d)
-                                             [~d])))))))]
+         ~@(for [d (butlast (mapcat (fn [s] [(str s) (str s "-")]) "whqistxo"))]
+             (let [d- (if (= (last d) \-) (str (first d) ".") d)]
+              `(defn ~(symbol d)
+                 ([]
+                    (Rest. [~d-]))
+                 ([note#]
+                    (assoc note# :durations (if-let [durs# (:durations note#)]
+                                              (conj durs# ~d-)
+                                              [~d-]))))))))]
    (defdurations))
 
 (macrolet
@@ -70,7 +77,10 @@
              `(defn ~c
                 [note#]
                 (assoc note# :chord ~(if (= c 'min*) "min" (str c)))))))]
-   (defchords [maj min* maj7 min7 dim aug aug7 sus add9]))
+   (defchords [maj min aug dim dom7 maj7 min7 sus4 sus2 maj6
+               min6 dom9 maj9 min9 dim7 add9 min11 dom11 dom13
+               min13 maj13 dom7<5 dom7>5 maj7<5 maj7>5 minmaj7
+               dom7<5<9 dom7<5>9 dom7>5<9 dom7>5>9]))
 
 (defn ++
   [& notes]
@@ -80,6 +90,31 @@
   [& notes]
   (reduce #(str %1 "_" %2) notes))
 
+(defn tie
+  [& notes]
+  (let [[follow & continues] (flatten notes)
+        middle (butlast continues)
+        final (last continues)]
+    (pattern (str follow \-)
+             (when middle
+               (map (fn [{:keys [pitch chord durations]}]
+                      (str [pitch] chord \- (apply str durations) \-))
+                    middle))
+             (when final
+               (let [{:keys [pitch chord durations]} final]
+                 (str [pitch] chord \- (apply str durations)))))))
+
+(defn **
+  [n & notes]
+  (let [notes (flatten notes)
+        total (count notes)
+        ratio (str "*" total ":" n)]
+    (pattern (map #(str % ratio) notes))))
+
+(defn ***
+  [n1 n2 n3]
+  (pattern (map #(str % "*") [n1 n2 n3])))
+
 (defn >>
   ([note] (>> note 1))
   ([note n] (assoc note :pitch (+ (:pitch note) n))))
@@ -88,59 +123,65 @@
   ([note] (<< note 1))
   ([note n] (assoc note :pitch (- (:pitch note) n))))
 
-;;Instruments, rhythms and controllers
+;; Voices and controllers
 
-(defn pattern
-  [& xs]
-  (str " " (apply str (map #(str " " % " ") (flatten xs))) " "))
+(defn voice
+  [n & xs]
+  (str "V" n (pattern xs)))
 
-(defn bar
-  [& xs]
-  (pattern "|" xs "|"))
+(defn tempo
+  [n & xs]
+  (str "T" n (pattern xs)))
+
+(defn vol
+  [n & xs]
+  (str "X[Volume]=" n (pattern xs)))
+
+;; Instruments, rhythms
 
 (defn- key->inst
   [k]
   (str  "[" (st/upper-case (st/replace (name k) \- \_ )) "]"))
 
 (defn inst
-  [i & patt]
-  (str "I" (key->inst i) (pattern patt)))
+  [i & xs]
+  (str "I" (key->inst i) (pattern xs)))
 
 (defn rhythm
   [& layers]
-  (pattern
-   "V9"
-   (map
-    (fn [[i [k v]]]
-      (let [k (key->inst k)]
-        (str "L" [(inc i)]
-             (pattern (map #(if (= (first %) \R)
-                              %
-                              (str k %)) v)))))
-    (map-indexed vector (partition 2 layers)))))
+  (voice 9
+         (map
+          (fn [[i [k v]]]
+            (let [k (key->inst k)]
+              (pattern "L" [(inc i)]
+                       (map #(if (= (type %) Rest)
+                               (str %)
+                               (str k %)) v))))
+          (map-indexed vector (partition 2 layers)))))
 
-(defn tempo
-  [n & patt]
-  (str "T" n (pattern patt)))
-
-(defn vol
-  [n & patt]
-  (str "X[Volume]=" n (pattern patt)))
-
-;;Player
+;; Player
 
 (def ^{:private true} player (Player.))
 
 (defn play!
-  [& patts]
-  (let [patt (pattern patts)]
-    (.play player patt)
-    patt))
+  [& xs]
+  (let [x (pattern xs)]
+    (.play player x)
+    (.close player)
+    x))
 
 (defn stop!
+  []
+  (.pause player))
+
+(defn pause!
+  []
+  (.pause player))
+
+(defn resume!
   []
   (.stop player))
 
 (defn save!
-  [file-name & patts]
-  (.save player (pattern patts) file-name))
+  [file-name & xs]
+  (.save player (pattern xs) file-name))
