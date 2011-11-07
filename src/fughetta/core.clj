@@ -77,7 +77,7 @@
              `(defn ~c
                 [note#]
                 (assoc note# :chord ~(if (= c 'min*) "min" (str c)))))))]
-   (defchords [maj min aug dim dom7 maj7 min7 sus4 sus2 maj6
+   (defchords [maj minor aug dim dom7 maj7 min7 sus4 sus2 maj6
                min6 dom9 maj9 min9 dim7 add9 min11 dom11 dom13
                min13 maj13 dom7<5 dom7>5 maj7<5 maj7>5 minmaj7
                dom7<5<9 dom7<5>9 dom7>5<9 dom7>5>9]))
