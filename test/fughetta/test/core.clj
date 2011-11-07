@@ -20,9 +20,10 @@
                (map #(map (fn [n] (if (= n -) - (>> (bf 2 s) n)))
                           %)
                     [g1 g2 g3]))]
-  (tempo 150
-         (repeat 2 (inst :distortion-guitar g))
-         (repeat 2 (rhythm
-                    :bass-drum (patt1 b1 b2 b3)
-                    :electric-snare snare
-                    :crash-cymbal-1 cymbal))))
+  (play!
+   (tempo 150
+          (repeat 2 (inst :distortion-guitar g))
+          (repeat 2 (rhythm
+                     :bass-drum (patt1 b1 b2 b3)
+                     :electric-snare snare
+                     :crash-cymbal-1 cymbal)))))
