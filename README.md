@@ -92,7 +92,7 @@ Use the pattern function to join notes (collections will be flattened!)
   (<< (c) 4) => "[56]"
 ```
 
-### Voices, tempo
+### Voices and controllers
 
 * Voices
 
@@ -104,6 +104,12 @@ Use the pattern function to join notes (collections will be flattened!)
 
 ```clj
   (tempo 150 (c) (d) (e))
+```
+
+* Volume
+
+```clj
+  (vol 1500 (c) (d) (e))
 ```
 
 ### Player
@@ -125,8 +131,6 @@ Use the pattern function to join notes (collections will be flattened!)
 ```clj
   (save! "filename" (c) (d 5) (e 5 q))
 ```
-
-### More to come...
 
 ## JFugue
 
