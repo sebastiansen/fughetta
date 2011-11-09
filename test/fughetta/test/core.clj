@@ -1,6 +1,5 @@
 (ns fughetta.test.core
-  (:use [fughetta.core])
-  (:use [clojure.test]))
+  (:use fughetta.core))
 
 ;; Part 1 in New Millenium Cyanide Christ by Meshuggah
 (let [x "s"

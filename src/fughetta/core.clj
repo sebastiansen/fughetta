@@ -153,7 +153,7 @@
          (map
           (fn [[i [k v]]]
             (let [k (key->inst k)]
-              (pattern "L" [(inc i)]
+              (pattern (str "L" (inc i))
                        (map #(condp = (type %)
                                  Rest
                                (str %)

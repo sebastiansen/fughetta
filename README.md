@@ -1,6 +1,23 @@
-# fughetta
+# Fughetta
 
 A [JFugue](http://www.jfugue.org/) wrapper for Clojure with some ideas from [Haskore] (http://www.haskell.org/haskellwiki/Haskore)
+
+## Installation
+
+Add depencency to lein/cake project:
+
+```clj
+[fughetta "0.0.1-SNAPSHOT"]
+```
+
+## Usage
+
+Import into your namespace:
+
+```clj
+(:use fughetta.core)
+```
+
 
 ### Notes, durations and chords as functions
 
